@@ -1,0 +1,64 @@
+services:
+
+  zipkin:
+    image: openzipkin/zipkin:2.24.3
+    hostname: zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - mynetwork
+
+  stamp-service:
+    hostname: stamp-service
+    container_name: stamp-service
+    build:
+      context: ./poststamp-service
+      dockerfile: Dockerfile
+    ports:
+      - "9090:8080"
+    networks:
+      - mynetwork
+
+  address-service:
+    hostname: address-service
+    container_name: address-service
+    build:
+      context: ./homeaddress-service
+      dockerfile: Dockerfile
+    ports:
+      - "9091:8080"
+    networks:
+      - mynetwork
+
+  postnl-service:
+    hostname: postnl-service
+    container_name: postnl-service
+    build:
+      context: ./postnl-service
+      dockerfile: Dockerfile
+    ports:
+      - "9092:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      - stamp-service
+
+  postcard-service:
+    hostname: postcard-service
+    container_name: postcard-service
+    build:
+      context: ./postcard-service
+      dockerfile: Dockerfile
+    ports:
+      - "9093:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      - address-service
+      - stamp-service
+      - postnl-service
+
+networks:
+  mynetwork:
+    driver: bridge

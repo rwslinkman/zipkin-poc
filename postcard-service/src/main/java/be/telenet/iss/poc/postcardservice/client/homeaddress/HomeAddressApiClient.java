@@ -2,6 +2,7 @@ package be.telenet.iss.poc.postcardservice.client.homeaddress;
 
 import be.telenet.iss.poc.postcardservice.client.homeaddress.model.AddressResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -10,7 +11,12 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class HomeAddressApiClient {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public HomeAddressApiClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public AddressResponse getUserAddress(String userName) {
         log.info("Incoming request");

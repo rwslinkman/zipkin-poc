@@ -1,13 +1,10 @@
 services:
-
   zipkin:
     image: openzipkin/zipkin:2.24.3
     hostname: zipkin
     container_name: zipkin
     ports:
       - "9411:9411"
-    networks:
-      - mynetwork
 
   stamp-service:
     hostname: stamp-service
@@ -17,8 +14,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9090:8080"
-    networks:
-      - mynetwork
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8080/actuator/health" ]
+      start_period: 30s
+      interval: 5s
+      timeout: 5s
+      retries: 50
 
   address-service:
     hostname: address-service
@@ -28,8 +29,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9091:8080"
-    networks:
-      - mynetwork
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8080/actuator/health" ]
+      start_period: 30s
+      interval: 5s
+      timeout: 5s
+      retries: 50
 
   postnl-service:
     hostname: postnl-service
@@ -39,10 +44,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9092:8080"
-    networks:
-      - mynetwork
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8080/actuator/health" ]
+      start_period: 30s
+      interval: 5s
+      timeout: 5s
+      retries: 50
     depends_on:
-      - stamp-service
+      stamp-service:
+        condition: service_healthy
 
   postcard-service:
     hostname: postcard-service
@@ -52,13 +62,16 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9093:8080"
-    networks:
-      - mynetwork
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8080/actuator/health" ]
+      start_period: 30s
+      interval: 5s
+      timeout: 5s
+      retries: 50
     depends_on:
-      - address-service
-      - stamp-service
-      - postnl-service
-
-networks:
-  mynetwork:
-    driver: bridge
+      address-service:
+        condition: service_healthy
+      stamp-service:
+        condition: service_healthy
+      postnl-service:
+        condition: service_healthy

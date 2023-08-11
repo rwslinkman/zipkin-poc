@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 public class HomeAddressController
 {
-    private final static Map<String, AddressResponse> addressesDatabase = Map.of(
+    private static final Map<String, AddressResponse> addressesDatabase = Map.of(
         "person1", new AddressResponse("Person One" , new Address("First Street", "1a", "1234AB", "Eindhoven", "Netherlands")),
         "person2", new AddressResponse("Person Two", new Address("Second Street", "1b", "4321AB", "Eindhoven", "Netherlands"))
     );

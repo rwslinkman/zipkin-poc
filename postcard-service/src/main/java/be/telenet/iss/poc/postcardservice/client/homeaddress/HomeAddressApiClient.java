@@ -11,7 +11,7 @@ public class HomeAddressApiClient {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public AddressResponse getUserAddress(String userName) {
-        ResponseEntity<AddressResponse> response = restTemplate.getForEntity("http://address-service:9091/address?user=" + userName, AddressResponse.class);
+        ResponseEntity<AddressResponse> response = restTemplate.getForEntity("http://address-service:8080/address?user=" + userName, AddressResponse.class);
         return response.getBody();
     }
 }

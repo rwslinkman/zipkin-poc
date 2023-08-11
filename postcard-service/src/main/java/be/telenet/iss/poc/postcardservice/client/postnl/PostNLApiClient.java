@@ -12,7 +12,7 @@ public class PostNLApiClient {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public int sendMail(SendMailRequest request) {
-        ResponseEntity<SendMailResponse> response =   restTemplate.postForEntity("http://postnlservice:9092/sendmail", request, SendMailResponse.class);
+        ResponseEntity<SendMailResponse> response =   restTemplate.postForEntity("http://postnl-service:8080/sendmail", request, SendMailResponse.class);
         return response.getBody().getQueuePosition();
     }
 }

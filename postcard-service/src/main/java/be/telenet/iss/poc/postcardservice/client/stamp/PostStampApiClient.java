@@ -13,7 +13,7 @@ public class PostStampApiClient {
 
     public String buyStamp(String userName) {
         var payload = new BuyStampRequest(userName);
-        ResponseEntity<BuyStampResponse> response = restTemplate.postForEntity("http://stampservice:9090/buy-stamp", payload, BuyStampResponse.class);
+        ResponseEntity<BuyStampResponse> response = restTemplate.postForEntity("http://stamp-service:8080/buy-stamp", payload, BuyStampResponse.class);
         return response.getBody().getStampId();
     }
 }

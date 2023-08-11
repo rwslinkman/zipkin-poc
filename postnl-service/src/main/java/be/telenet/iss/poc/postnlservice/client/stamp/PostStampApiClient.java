@@ -11,7 +11,7 @@ public class PostStampApiClient {
 
     public boolean validateStamp(String stampId) {
         var payload = new ValidateStampRequest(stampId);
-        var response = restTemplate.postForEntity("http://stampservice:9090/validate", payload, Object.class);
+        var response = restTemplate.postForEntity("http://stamp-service:8080/validate", payload, Object.class);
         return response.getStatusCode().is2xxSuccessful();
     }
 }

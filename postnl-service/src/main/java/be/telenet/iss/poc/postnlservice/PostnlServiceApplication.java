@@ -12,10 +12,4 @@ public class PostnlServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PostnlServiceApplication.class, args);
 	}
-
-	@Bean
-	public RestTemplate getRestTemplate(RestTemplateBuilder builder)
-	{
-		return builder.build();
-	}
 }

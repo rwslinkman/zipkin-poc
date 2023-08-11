@@ -4,6 +4,7 @@ import be.telenet.iss.poc.poststampservice.model.BuyStampRequest;
 import be.telenet.iss.poc.poststampservice.model.BuyStampResponse;
 import be.telenet.iss.poc.poststampservice.model.UserBalance;
 import be.telenet.iss.poc.poststampservice.model.ValidateStampRequest;
+import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +20,24 @@ import java.util.UUID;
 @RestController
 public class StampsController {
 
-    private final static List<UserBalance> userBalance = List.of(
-            new UserBalance("person1", 10),
-            new UserBalance("person2", 10)
+    private static final List<UserBalance> bankVault = List.of(
+            new UserBalance("person1", 100),
+            new UserBalance("person2", 100)
     );
-    private final static ArrayList<String> stampCollection = new ArrayList<>();
+    private static final ArrayList<String> stampCollection = new ArrayList<>();
+
+    private static final int failureChangePercentage = 10;
+    private final Random random = new Random();
 
     @PostMapping(path = "/buy-stamp")
     public ResponseEntity<BuyStampResponse> buyStamp(@RequestBody BuyStampRequest request) {
         log.info("Incoming request");
-        var foundUserBalance = userBalance.stream().filter(it -> it.getAccountOwner().equals(request.getUser())).findFirst();
+
+        if(randomChance() < failureChangePercentage) {
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT.value()).build();
+        }
+
+        var foundUserBalance = bankVault.stream().filter(it -> it.getAccountOwner().equals(request.getUser())).findFirst();
         if(foundUserBalance.isEmpty()) {
             // No account for user
             return ResponseEntity.notFound().build();
@@ -52,6 +61,11 @@ public class StampsController {
     @PostMapping(path = "/validate")
     public ResponseEntity<Object> validateStamp(@RequestBody ValidateStampRequest request) {
         log.info("Incoming request");
+
+        if(randomChance() < failureChangePercentage) {
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT.value()).build();
+        }
+
         if(stampCollection.contains(request.getStampId())) {
             // Stamp was found, cannot be used again
             stampCollection.remove(request.getStampId());
@@ -62,5 +76,9 @@ public class StampsController {
 
     private String generateStampId() {
         return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    private int randomChance() {
+        return random.nextInt(100);
     }
 }

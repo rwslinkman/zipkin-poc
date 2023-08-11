@@ -12,10 +12,4 @@ public class PostcardServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PostcardServiceApplication.class, args);
 	}
-
-	@Bean
-	public RestTemplate getRestTemplate(RestTemplateBuilder builder)
-	{
-		return builder.build();
-	}
 }

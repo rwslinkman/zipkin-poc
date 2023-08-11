@@ -12,10 +12,4 @@ public class PoststampServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PoststampServiceApplication.class, args);
 	}
-
-	@Bean
-	public RestTemplate getRestTemplate(RestTemplateBuilder builder)
-	{
-		return builder.build();
-	}
 }

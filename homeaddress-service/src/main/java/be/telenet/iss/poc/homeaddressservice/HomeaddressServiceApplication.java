@@ -12,10 +12,4 @@ public class HomeaddressServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HomeaddressServiceApplication.class, args);
 	}
-
-	@Bean
-	public RestTemplate getRestTemplate(RestTemplateBuilder builder)
-	{
-		return builder.build();
-	}
 }

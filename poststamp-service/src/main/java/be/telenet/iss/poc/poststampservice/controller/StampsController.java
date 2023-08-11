@@ -4,6 +4,7 @@ import be.telenet.iss.poc.poststampservice.model.BuyStampRequest;
 import be.telenet.iss.poc.poststampservice.model.BuyStampResponse;
 import be.telenet.iss.poc.poststampservice.model.UserBalance;
 import be.telenet.iss.poc.poststampservice.model.ValidateStampRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 public class StampsController {
 
@@ -25,6 +27,7 @@ public class StampsController {
 
     @PostMapping(path = "/buy-stamp")
     public ResponseEntity<BuyStampResponse> buyStamp(@RequestBody BuyStampRequest request) {
+        log.info("Incoming request");
         var foundUserBalance = userBalance.stream().filter(it -> it.getAccountOwner().equals(request.getUser())).findFirst();
         if(foundUserBalance.isEmpty()) {
             // No account for user
@@ -48,6 +51,7 @@ public class StampsController {
 
     @PostMapping(path = "/validate")
     public ResponseEntity<Object> validateStamp(@RequestBody ValidateStampRequest request) {
+        log.info("Incoming request");
         if(stampCollection.contains(request.getStampId())) {
             // Stamp was found, cannot be used again
             stampCollection.remove(request.getStampId());

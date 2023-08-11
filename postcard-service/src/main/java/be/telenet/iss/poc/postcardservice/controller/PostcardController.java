@@ -5,12 +5,14 @@ import be.telenet.iss.poc.postcardservice.client.postnl.PostNLApiClient;
 import be.telenet.iss.poc.postcardservice.client.postnl.model.SendMailRequest;
 import be.telenet.iss.poc.postcardservice.client.stamp.PostStampApiClient;
 import be.telenet.iss.poc.postcardservice.model.MailPostcardRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 public class PostcardController {
 
@@ -27,7 +29,7 @@ public class PostcardController {
 
     @PostMapping(path = "/send-postcard")
     public ResponseEntity<Object> sendPostcard(@RequestBody MailPostcardRequest request) {
-
+        log.info("Incoming request");
         var address = homeAddressClient.getUserAddress(request.getRecipient());
 
         var stampId = stampApiClient.buyStamp(request.getSender());

@@ -3,6 +3,7 @@ package be.telenet.iss.poc.postnlservice.controller;
 import be.telenet.iss.poc.postnlservice.client.stamp.PostStampApiClient;
 import be.telenet.iss.poc.postnlservice.model.SendMailRequest;
 import be.telenet.iss.poc.postnlservice.model.SendMailResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
+@Slf4j
 @RestController
 public class MailController {
 
@@ -26,6 +28,7 @@ public class MailController {
 
     @PostMapping(path = "/sendmail")
     public ResponseEntity<SendMailResponse> sendMail(@RequestBody SendMailRequest request) {
+        log.info("Incoming request");
         var isValidStamp = stampApiClient.validateStamp(request.getStampId());
         if(!isValidStamp) {
             return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED.value()).build();

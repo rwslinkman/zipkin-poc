@@ -2,6 +2,7 @@ package be.telenet.iss.poc.homeaddressservice.controller;
 
 import be.telenet.iss.poc.homeaddressservice.model.Address;
 import be.telenet.iss.poc.homeaddressservice.model.AddressResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class HomeAddressController
 {
@@ -19,6 +21,7 @@ public class HomeAddressController
 
     @GetMapping(path ="/address")
     public ResponseEntity<AddressResponse> getUserAddress(@RequestParam("user") String username) {
+        log.info("Incoming request");
         if(!addressesDatabase.containsKey(username)) {
             return ResponseEntity.notFound().build();
         }

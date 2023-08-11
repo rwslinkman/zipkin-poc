@@ -21,3 +21,8 @@ POST http://localhost:9093/send-postcard
     "cardText": "Hello world! :)"
 }
 ```
+
+Open the Zipkin UI in your browser: 
+```shell
+http://localhost:9411
+```
